@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Title</title>
+    <script>
+        function setTitle(id, content) {
+            var ele = document.getElementById(id);
+            ele.innerHTML = content;
+        }
+    </script>
+    <style>
+        body {
+            margin: 0 auto;
+            font-family: Cambria;
+            background-color: #586375;
+        }
+
+        .first {
+            float: right;
+            width: 50%;
+            /* height: 560px;*/
+            background-color: #586375;
+        }
+
+        #left {
+            float: left;
+            width: 50%;
+            background-color:#586375 ;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        span {
+            color: #778FAD;
+            font-size: 12px;
+        }
+
+        p {
+            color: white;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .second {
+            height: 600px;
+            word-break: break-all;
+            padding-top: 5px;
+            margin-left: 15px;
+            margin-right: 25px;
+            background-color: rgba(255, 255, 255, 0.1);
+            line-height: 2em;
+            border-radius: 5px;
+            padding: 0 20px;
+        }
+
+        .third {
+            margin-top: -5px;
+            line-height: 2em;
+        }
+
+        .remark {
+            color: #859fce;
+            padding-left: 20px;
+        }
+
+        button {
+            width: 60px;
+            height: 30px;
+            background: rgb(92, 128, 175);
+            color: #ffffff;
+            border-radius: 5px;
+            border: none;
+            margin: 20px 10px;
+            outline-style: none;
+        }
+
+        select {
+            margin-left: 20px;
+            display:inline-block;
+            width: 170px;
+            height: 18px;
+            color: #ffffff;
+            outline-style: none;
+            background:rgb(92,103,120);
+            border: 1px solid #000;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            background-image: url("img/checkbox%202(1).png");
+            background-repeat: no-repeat;
+            background-position: 151px 0px;
+            border: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        input {
+            position: absolute;
+            top: 6px;
+            left: -20px;
+            visibility: hidden;
+        }
+        .radio_span {
+            background-color: transparent;
+            border: 1px solid rgb(74, 144, 179);
+            border-radius: 100%;
+            display: inline-block;
+            height: 10px;
+            margin-right: 10px;
+            margin-top: -35px;
+            vertical-align: middle;
+            width: 10px;
+            line-height: 1;
+            margin-left: -20px;
+        }
+        input:checked + .radio_span:after{
+            background-color:rgb(78,151,188);
+            border-radius:100%;
+            content:"";
+            display:inline-block;
+            height:7px;
+            width:7px;
+            margin-left:2px;
+            margin-bottom: 2px;
+        }
+        /*label{
+            background-image: url("img/radio.png") ;
+        }*/
+        form {
+            padding: 0 10px;
+        }
+
+        img {
+            width: 12px;
+            height: 7px;
+            /*   background-image:url("img/arrow 01.png");
+               background-repeat:no-repeat;
+               background-position: -12px 2px;*/
+        }
+
+        h4 {
+            display: inline-block;
+            color: rgb(93, 129, 176);
+            margin-left: 10px;
+        }
+        .span_font{
+            font-size:16px;
+            margin-left:20px;
+        }
+        label {
+            width: 0;
+            display: block;
+            position: relative;
+            left: 40px;
+            padding: 5px 0;
+            color: rgb(198, 208, 217);
+        }
+
+        /*       .checked{
+                   background: url("img/radio.png")no-repeat;
+               }*/
+    </style>
+</head>
+<body>
+<div class="first">
+    <h3 class="remark">Remark</h3>
+    <div class="second">
+        <span class="third" id="title_01"></span><br/>
+        <p class="third" id="content1">
+        </p>
+        <span class="third title_02" id="title_02"></span>
+        <p class="third" id="content2">
+        </p>
+        <span class="third title_03" id="title_03"></span>
+        <p class="third" id="content3">
+        </p>
+    </div>
+</div>
+<div id="left"></div>
+<script src="jquery-3.1.1.js"></script>
+<script>
+    window.onload = function () {
+        //创建数据
+        var pageall = {
+            'page': {"name": "Scheduling Mode", "type": "radio", "data": ['red', 'blue', 'yellow']},
+            'page2': {"name": "Job Start Method", "type": "radio", "data": ['red', 'blue']},
+            'page3': {
+                "name": "Multi-Carrier Job",
+                "type": "select",
+                "jb": 'Multi-Carrier Job',
+                "data": ['red', 'blue', 'yellow']
+            },
+            'page4': {"name": "Job Start Method", "type": "radio", "data": ['red', 'blue']},
+
+        }
+        var btn = ['apply', 'code', 'delte'];
+        var left = document.getElementById('left');
+        for (var a in pageall) {
+            var select = document.createElement('select');
+            var span_font = document.createElement('span');
+            var form = document.createElement('form');
+            var h4 = document.createElement('h4');
+            var img = document.createElement('img');
+            var div = document.createElement('div');
+            img.setAttribute('src', 'img/icon-sanjiasan.png')
+            span_font.className = 'span_font';
+            span_font.innerHTML = pageall[a].name;
+            h4.innerHTML = pageall[a].name;
+            form.appendChild(img);
+            form.appendChild(h4);
+            pageall[a].data.forEach(function (data) {
+                if (pageall[a].type == 'radio') {
+                    var label = document.createElement('label');
+                    var input = document.createElement('input');
+                    var span = document.createElement('span');
+                    span.className = 'radio_span';
+                    var i = document.createElement('i');
+                    label.innerHTML = data;
+                    input.setAttribute('name', 'radio');
+                    input.setAttribute('type', 'radio');
+                    label.appendChild(input);
+                    label.appendChild(span);
+                    label.appendChild(i);
+                    form.appendChild(label);
+                } else {
+                    var option = document.createElement('option');
+                    option.innerHTML = data;
+                    select.appendChild(option);
+                   div.appendChild(span_font);
+                    div.appendChild(select);
+                    form.appendChild(div);
+                }
+            })
+            btn.forEach(function (data) {
+                var btn = document.createElement("button");
+                btn.innerHTML = data;
+                form.appendChild(btn);
+            })
+            left.appendChild(form);
+        }
+    }
+    /*        //获取/创建标签
+     var left = document.getElementById('left');
+     var form = document.createElement('form');
+     var img = document.createElement('img');
+     var br=document.createElement('br');
+     img.setAttribute('src','img/icon-sanjiasan.png');
+     //第一个form表单
+     var h4 = document.createElement('h4');
+     h4.innerHTML = page.name;
+     form.appendChild(img)
+     form.appendChild(h4);
+     page.data.forEach(function(data){
+     var label = document.createElement('label');
+     var input = document.createElement('input');
+     var i = document.createElement('i');
+     label.innerHTML=data;
+     input.setAttribute('type', 'radio');
+     input.setAttribute('name', 'radio');
+     i.className='i1';
+     label.appendChild(i);
+     label.appendChild(input);
+
+     form.appendChild(label);
+     })
+     left.appendChild(form)
+     btn.forEach(function (data) {
+     var btn = document.createElement('button');
+     btn.innerHTML = data;
+     form.appendChild(btn)
+     })
+     form.appendChild(br);
+     //第二个form表单
+     var h4 = document.createElement('h4');
+     var br=document.createElement('br');
+     h4.innerHTML = page2.name;
+     form.appendChild(img)
+     form.appendChild(h4);
+     page2.data.forEach(function(data){
+     var label = document.createElement('label');
+     var input = document.createElement('input');
+     var i = document.createElement('i');
+     label.innerHTML=data;
+     input.setAttribute('type', 'radio');
+     input.setAttribute('name', 'radio');
+     i.className='i1';
+     label.appendChild(i);
+     label.appendChild(input);
+
+     form.appendChild(label);
+     })
+     left.appendChild(form)
+     btn.forEach(function (data) {
+     var btn = document.createElement('button');
+     btn.innerHTML = data;
+     form.appendChild(btn)
+     })
+     form.appendChild(br);
+     //第三个form表单
+     var h4 = document.createElement('h4');
+     var img = document.createElement('img');
+     var br=document.createElement('br');
+     img.setAttribute('src','img/icon-sanjiasan.png');
+     h4.innerHTML = page3.name;
+     form.appendChild(img)
+     form.appendChild(h4);
+     var label = document.createElement('label');
+     var select = document.createElement('select');
+     var span =document.createElement('span');
+     span.innerHTML = page3.jb;
+     for(var a in page3.data){
+     var option = document.createElement('option');
+     option.innerHTML = page3.data[a];
+     select.appendChild(option);
+     }
+
+     form.appendChild(span);
+     form.appendChild(select)*/
+
+
+
+
+
+    /*    $(function () {
+     $('.form-group').append('<img src="img/icon-sanjiasan.png" />', '<h4>Scheduling Mode</h4>' + '<br>');
+     $('.form-group2').append('<img src="img/icon-sanjiasan.png" />', '<h4>Job Start Method</h4>' + '<br>');
+     $('.form-group3 span').before('<img src="img/icon-sanjiasan.png" />', '<h4>Multi-Carrier Job</h4>' + '<br>');
+     $('.form-group4').append('<img src="img/icon-sanjiasan.png" />', '<h4>Set Alarm Options - Post alarm for Missing Wafers</h4>' + '<br>');
+     $('.form-group5').append('<img src="img/icon-sanjiasan.png" />', '<h4>Set Alarm Options - Post alarm for Extra Wafers</h4>' + '<br>');
+     //第一个form表单
+     $.each(page, function (index, data) {
+     $('.form-group').append('<label>'+'<input type="radio"name="data">'+'<i>'+'</i>'+'<span class="span">'+data+'</span>'+'</label>'+ '<br>');
+     })
+     $.each(btn, function (i, data) {
+     $('.form-group').append('<button>' + data + '</button>');
+     $('button').html(data);
+
+     })
+     //第二个form表单
+     $.each(page2, function (index, data) {
+     $('.form-group2').append('<label>'+'<input type="radio"name="data">'+'<i>'+'</i>'+'<span class="span">'+data+'</span>'+'</label>'+ '<br>');
+     })
+     $.each(btn, function (i, data) {
+     $('.form-group2').append('<button>' + data + '</button>');
+     })
+     //第三个form表单
+     $.each(page3, function (index, data) {
+     $('select').append('<option name="data">' + data + '</option>');
+     });
+     $.each(btn, function (i, data) {
+     $('.form-group3').append('<button>' + data + '</button>');
+     })
+     //第四个form表单
+     $.each(page4, function (index, data) {
+     $('.form-group4').append('<label>'+'<input type="radio"name="data">'+'<i>'+'</i>'+'<span class="span">'+data+'</span>'+'</label>'+ '<br>');
+     })
+     $.each(btn, function (i, data) {
+     $('.form-group4').append('<button>' + data + '</button>');
+     })
+     //第五个form表单
+     $.each(page5, function (index, data) {
+     $('.form-group5').append('<label>'+'<input type="radio"name="data">'+'<i>'+'</i>'+'<span class="span">'+data+'</span>'+'</label>'+ '<br>');
+     })
+     $.each(btn, function (i, data) {
+     $('.form-group5').append('<button>' + data + '</button>');
+     })
+     })
+     /!*    $(function () {　　//给所有的单选按钮点击添加处理
+     $("input[type='radio']").click(function () {　　　　
+     $("input[type='radio'][name='"+$(this).attr('name')+"']").parent().removeClass("checked");
+     　　$(this).parent().addClass("checked");
+     });
+     });*!/
+     $(function(){
+     $('i').click(function(){
+     $(this).parent().siblings().children().removeClass('i');
+     $(this).addClass('i');
+
+     })
+     })*/
+
+    setTitle('title_01', 'Step Two:Objectives proposed');
+    setTitle('title_02', 'Step Three:Task raised');
+    setTitle('title_03', 'Notes');
+
+    setTitle('content1', 'There are moments in life when you miss someone so much that you just want to pick them from your dreams and hug them for real! Dream what you want to dream;go where you want to go;be what you want to be,because you have only one life and one chance to do all the things you want to do.');
+    setTitle('content2', '1.May you have enough happiness to make you sweet,enough trials to make you strong,enough sorrow to keep you human,enough hope to make you happy? Always put yourself in others’shoes.If you feel that it hurts you,it probably hurts the other person, too.' + '<br/>' +
+        '2.who have touched their lives.Love begins with a smile,grows with a kiss and ends with a tear.The brightest future will always be based on a forgotten past, you can’t go on well in lifeuntil you let go of your past failures and heartaches.');
+    setTitle('content3', 'The happiest of people don’t necessarily have the best of everything;they just make the most of everything that comes along their way.Happiness lies for those who cry,those who hurt, those who have searched,and those who have tried,for only they can appreciate the importance of people');
+</script>
+</body>
+</html>
